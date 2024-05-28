@@ -2284,7 +2284,11 @@ static void RewardGroupAtKill_helper(Player* pGroupGuy, Unit* pVictim, uint32 co
         // XP updated only for alive group member
         if (pGroupGuy->IsAlive() && not_gray_member_with_max_level)
         {
-            uint32 itr_xp = (member_with_max_level == not_gray_member_with_max_level) ? uint32(xp * rate) : uint32((xp * rate / 2) + 1);
+            if (count >=5 ) // raid xp cap
+                count = 5;
+            // uint32 itr_xp = (member_with_max_level == not_gray_member_with_max_level) ? uint32(xp * rate) : uint32((xp * rate / 2) + 1);
+            // get full xp when in group with one other player
+            uint32 itr_xp = (member_with_max_level == not_gray_member_with_max_level) ? uint32(xp * rate) * count : uint32((xp * rate / 2) + 1) * count;
             if (pGroupGuy->GetLevel() <= not_gray_member_with_max_level->GetLevel())
                 pGroupGuy->GiveXP(itr_xp, pVictim);
             if (Pet* pet = pGroupGuy->GetPet())
@@ -2332,7 +2336,7 @@ void Group::RewardGroupAtKill(Unit* pVictim, Player* pPlayerTap)
         bool is_raid = PvP ? false : sMapStorage.LookupEntry<MapEntry>(pVictim->GetMapId())->IsRaid() && isRaidGroup();
         bool is_dungeon = PvP ? false : sMapStorage.LookupEntry<MapEntry>(pVictim->GetMapId())->IsDungeon();
         float group_rate = MaNGOS::XP::xp_in_group_rate(count, is_raid);
-        sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Group::~RewardGroupAtKill: pPlayerTap: %s, count: %u, group_rate: %f", pPlayerTap->GetName(), count, group_rate);
+        // sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Group::~RewardGroupAtKill: pPlayerTap: %s, count: %u, group_rate: %f", pPlayerTap->GetName(), count, group_rate);
 
         for (GroupReference* itr = GetFirstMember(); itr != nullptr; itr = itr->next())
         {
