@@ -2332,7 +2332,7 @@ void Group::RewardGroupAtKill(Unit* pVictim, Player* pPlayerTap)
         bool is_raid = PvP ? false : sMapStorage.LookupEntry<MapEntry>(pVictim->GetMapId())->IsRaid() && isRaidGroup();
         bool is_dungeon = PvP ? false : sMapStorage.LookupEntry<MapEntry>(pVictim->GetMapId())->IsDungeon();
         float group_rate = MaNGOS::XP::xp_in_group_rate(count, is_raid);
-        sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Group::~RewardGroupAtKill: group_rate: %d", group_rate);
+        sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Group::~RewardGroupAtKill: pPlayerTap: %d, count: %d, group_rate: %d", pPlayerTap->GetName(), count, group_rate);
 
         for (GroupReference* itr = GetFirstMember(); itr != nullptr; itr = itr->next())
         {
