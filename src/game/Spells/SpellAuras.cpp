@@ -1868,6 +1868,27 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
             }
             case SPELLFAMILY_SHAMAN:
                 break;
+                
+            case SPELLFAMILY_POTION:
+            {
+                switch (GetId())
+                {
+                    case 34000:                              // Flask of Experience
+                    {
+                        sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Flask of Experience item %u was used by player %s with modifier: %f", GetId(), target->GetName(), m_modifier.m_amount);
+                        // set variable to equal m_modifier.m_amount
+                        if (Player* pPlayer = ToPlayer(target))
+                        {
+                            pPlayer->SetPersonalXpRate(m_modifier.m_amount);
+                            float rate = pPlayer->GetPersonalXpRate();
+                            sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Player %s personal experience rate set to: %f", pPlayer->GetName(), rate);
+                        }
+                    }
+
+                    break;
+                
+                }
+            }
         }
     }
     // AT REMOVE
@@ -2091,6 +2112,17 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
                 target->SetStandState(UNIT_STAND_STATE_STAND);
                 target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 break;
+            }
+
+            case 34000: // Flask of Experience
+            {
+                if (Player* pPlayer = ToPlayer(target))
+                {
+                    float config_rate_xp_personal_min = sWorld.getConfig(CONFIG_FLOAT_RATE_XP_PERSONAL_MIN);
+                    pPlayer->SetPersonalXpRate(config_rate_xp_personal_min);
+                    float reset_rate = pPlayer->GetPersonalXpRate();
+                    sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Player %s personal experience rate set to: %f", pPlayer->GetName(), reset_rate);
+                }
             }
         }
 
