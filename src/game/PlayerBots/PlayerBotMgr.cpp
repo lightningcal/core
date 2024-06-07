@@ -1543,7 +1543,7 @@ bool HandlePartyBotPauseApplyHelper(Player* pTarget, uint32 duration)
                 if (pTarget->GetPet())
                     pTarget->GetPet()->AttackStop();
                     pTarget->GetPet()->StopMoving(); 
-                    pTarget->GetPet()->GetMotionMaster()->MoveIdle();
+                    pTarget->GetPet()->GetMotionMaster()->MoveFollow(pTarget);
             }
 
             return true;
