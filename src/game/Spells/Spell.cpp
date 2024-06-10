@@ -5392,7 +5392,7 @@ void Spell::SendChannelStart(uint32 duration)
 
     m_timer = duration;
 
-#if SUPPORTED_CLIENT_BUILD > CLIENT_BUILD_1_8_4
+#if SUPPORTED_CLIENT_BUILD > CLIENT_BUILD_1_11_2
     if (m_spellInfo->HasAttribute(SPELL_ATTR_EX_IS_CHANNELED))
     {
         WorldPacket data(SMSG_SPELL_UPDATE_CHAIN_TARGETS);
@@ -6566,11 +6566,6 @@ SpellCastResult Spell::CheckCast(bool strict)
                 Creature* creature = (Creature*)m_targets.getUnitTarget();
                 if (!creature->IsSkinnableBy(m_caster->ToPlayer()))
                     return SPELL_FAILED_TARGET_NOT_LOOTED;
-
-                // If the player isn't in loot range, the skins are lost forever.
-                // This only happens on large mobs with disjointed models (i.e. Devilsaurs).
-                if (!creature->IsWithinDistInMap(m_caster, INTERACTION_DISTANCE))
-                    return SPELL_FAILED_OUT_OF_RANGE;
 
                 int32 skillValue = ((Player*)m_caster)->GetSkillValue(SKILL_SKINNING);
                 int32 TargetLevel = m_targets.getUnitTarget()->GetLevel();
