@@ -1541,9 +1541,15 @@ bool HandlePartyBotPauseApplyHelper(Player* pTarget, uint32 duration)
                 pTarget->StopMoving();
                 pTarget->GetMotionMaster()->MoveIdle();
                 if (pTarget->GetPet())
+                {
                     pTarget->GetPet()->AttackStop();
                     pTarget->GetPet()->StopMoving(); 
+                    
                     pTarget->GetPet()->GetMotionMaster()->MoveFollow(pTarget, PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
+
+                    // TODO: set pet to defensive when pausing
+
+                }
             }
 
             return true;
