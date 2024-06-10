@@ -929,9 +929,18 @@ void PartyBotAI::UpdateInCombatAI()
 {
     if (!IsInDuel())
     {
+        Player* pLeader = GetPartyLeader();
+        Unit* pVictim = me->GetVictim();
+
         if (m_role == ROLE_TANK)
         {
-            Unit* pVictim = me->GetVictim();
+            // Attack marked if exist
+            if (!m_marksToFocus.empty())
+            {
+                pVictim = SelectAttackTarget(pLeader);
+                AttackStart(pVictim);
+                return;              
+            } 
 
             // Defend party members.
             if (!pVictim || pVictim->GetVictim() == me)
@@ -956,29 +965,26 @@ void PartyBotAI::UpdateInCombatAI()
                 }
             }
         }
-        else if (CrowdControlMarkedTargets())
-            return;
-    }
 
-    Unit* pVictim = me->GetVictim();
-
-    // Swap to marked target or party leader's target
-    if (GetRole() != ROLE_HEALER)
-    {
-        if (Player* pLeader = GetPartyLeader())
+        // Swap DPS to marked target or party leader's target
+        if (m_role == ROLE_MELEE_DPS || m_role == ROLE_RANGE_DPS)
         {
             Unit* newVictim = SelectAttackTarget(pLeader);
 
             if (newVictim && (newVictim != pVictim))
             {
-                if (pVictim)
-                    me->AttackStop();
-                else
-                    AttackStart(newVictim);
-
+                AttackStart(newVictim);
                 return;
             }
         }
+        
+        
+        
+        if (CrowdControlMarkedTargets())
+            return;
+    
+
+
     }
 
     switch (me->GetClass())
