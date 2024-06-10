@@ -1551,7 +1551,10 @@ bool HandlePartyBotPauseApplyHelper(Player* pTarget, uint32 duration)
                         pPet->GetMotionMaster()->MoveFollow(pTarget, PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
 
                         // set pet to passive also
+                        // char const* initialReactStateStr = ReactStateToString(pPet->GetReactState());
                         pPet->SetReactState(REACT_PASSIVE);
+                        // char const* newReactStateStr = ReactStateToString(pPet->GetReactState());
+                        // sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Pet react state changed from %s to %s while paused", initialReactStateStr, newReactStateStr);
                     }
                 }
             }
@@ -1561,7 +1564,12 @@ bool HandlePartyBotPauseApplyHelper(Player* pTarget, uint32 duration)
                 if (Pet* pPet = pTarget->GetPet())
                 {
                     if (pPet->IsAlive())
+                    {
+                        // char const* initialReactStateStr = ReactStateToString(pPet->GetReactState());
                         pPet->SetReactState(REACT_DEFENSIVE);
+                        // char const* newReactStateStr = ReactStateToString(pPet->GetReactState());
+                        // sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Pet react state changed from %s to %s while paused", initialReactStateStr, newReactStateStr);
+                    }
                 }
             }
 
