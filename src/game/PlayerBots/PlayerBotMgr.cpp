@@ -1555,6 +1555,15 @@ bool HandlePartyBotPauseApplyHelper(Player* pTarget, uint32 duration)
                     }
                 }
             }
+            else
+            {
+                // set pet to defensive when unpausing
+                if (Pet* pPet = pTarget->GetPet())
+                {
+                    if (pPet->IsAlive())
+                        pPet->SetReactState(REACT_DEFENSIVE);
+                }
+            }
 
             return true;
         }
