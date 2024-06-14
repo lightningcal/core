@@ -191,13 +191,13 @@ namespace MaNGOS
                 case 2:
                     return 1.0f;
                 case 3:
-                    return 0.834f;
-                case 4:
-                    return 0.7f;
-                case 5:
-                    return 0.6f;
-                default:
                     return 0.5f;
+                case 4:
+                    return 0.375f;
+                case 5:
+                    return 0.28f;
+                default:
+                    return 0.28f;
             }
 
             // if (count <= 5)
