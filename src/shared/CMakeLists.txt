@@ -27,6 +27,7 @@ set (shared_SRCS
     PosixDaemon.h
     ProgressBar.h
     Progression.h
+    RealmZone.h
     revision.h
     ServiceWin32.h
     SystemConfig.h
@@ -43,8 +44,6 @@ set (shared_SRCS
     Crypto/Authentication/SRP6.cpp
     Crypto/Encryption/RC4.h
     Crypto/Encryption/RC4.cpp
-    Crypto/Hash/Hmac.h
-    Crypto/Hash/Hmac.cpp
     Crypto/Hash/HMACSHA1.h
     Crypto/Hash/HMACSHA1.cpp
     Crypto/Hash/MD5.h

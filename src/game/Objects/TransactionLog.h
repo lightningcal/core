@@ -1,6 +1,4 @@
 /*
- * This file is part of the CMaNGOS Project. See AUTHORS file for Copyright information
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -16,33 +14,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _AUTH_HMAC_H
-#define _AUTH_HMAC_H
+#ifndef _TRANSACTION_LOG_H
+#define _TRANSACTION_LOG_H
 
 #include "Common.h"
-#include <vector>
 
-class BigNumber;
-
-class HmacHash
+struct TransactionPart
 {
-    public:
-        HmacHash() { }
-        HmacHash(uint8 const* data, int length);
-        ~HmacHash();
-
-        void UpdateBigNumber(BigNumber* bn);
-        void UpdateData(std::vector<uint8> const& data);
-        void UpdateData(uint8 const* data, int length);
-
-        void Finalize();
-
-        uint8* GetDigest() { return m_digest; }
-        static int constexpr GetLength() { return sizeof(m_digest); }
-
-    private:
-        typedef struct hmac_ctx_st HMAC_CTX;
-        HMAC_CTX* m_ctx;
-        uint8 m_digest[20]; // SHA_DIGEST_LENGTH
+    static int const MAX_TRANSACTION_ITEMS = 6;
+    TransactionPart()
+    {
+        memset(this, 0, sizeof(TransactionPart));
+    }
+    uint32 lowGuid;
+    uint32 money;
+    uint32 spell;
+    uint16 itemsEntries[MAX_TRANSACTION_ITEMS];
+    uint8 itemsCount[MAX_TRANSACTION_ITEMS];
+    uint32 itemsGuid[MAX_TRANSACTION_ITEMS];
 };
+
+struct PlayerTransactionData
+{
+    char const* type;
+    TransactionPart parts[2];
+};
+
 #endif
